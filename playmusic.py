@@ -13,6 +13,11 @@ def playmediastation(sonosroom_local, receivedtext):
   artist = tokens[1]
   album = tokens[2]
 
+  # start index
+  index = 0
+  if len(tokens) == 4:
+    index = int(tokens[3]) - 1
+
   # connect to mediastation
   try:
     url = usersettings.mediastation + '/browse/search/tracks?artist=' + artist + '&album=' + album
@@ -27,6 +32,10 @@ def playmediastation(sonosroom_local, receivedtext):
     print("Failed to search in Mediastation at " + url)
     return False
 
+  # clamp index
+  if index > len(r)-1:
+    index = len(r)-1
+
   # now send orders to sonos
   for zone in soco.discover():
     if zone.player_name.lower() == sonosroom_local.lower():
@@ -38,16 +47,14 @@ def playmediastation(sonosroom_local, receivedtext):
       for item in r:
         zone.add_uri_to_queue(item['upnp_url'])
 
-      print('Playing')
-      zone.play()
+      print('Playing from item #' + str(index+1))
+      zone.play_from_queue(index)
 
   # 1st clear queue
   #requests.get(usersettings.sonoshttpaddress + "/" + sonosroom_local + "/clearqueue")
 
 
   return True
-
-
 
 def playtag(sonosroom_local, receivedtext):
 
@@ -139,3 +146,5 @@ def playtag(sonosroom_local, receivedtext):
       'urltoget': urltoget
     }
     r = requests.post(appsettings.usagestatsurl, data=logdata)
+
+  return True

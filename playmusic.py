@@ -10,8 +10,8 @@ def playmediastation(sonosroom_local, receivedtext):
 
   # extract info
   tokens = receivedtext.split(':')
-  artist = tokens[1]
-  album = tokens[2]
+  artist = requests.utils.quote(tokens[1])
+  album = requests.utils.quote(tokens[2])
 
   # start index
   index = 0

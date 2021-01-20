@@ -18,9 +18,14 @@ def playmediastation(sonosroom_local, receivedtext):
   if len(tokens) == 4:
     index = int(tokens[3]) - 1
 
+  # build the url
+  if artist == 'playlist':
+    url = usersettings.mediastation + '/playlist/get?title=' + album
+  else:
+    url = usersettings.mediastation + '/browse/search/tracks?artist=' + artist + '&album=' + album
+
   # connect to mediastation
   try:
-    url = usersettings.mediastation + '/browse/search/tracks?artist=' + artist + '&album=' + album
     r = requests.get(url)
   except:
     print("Failed to connect to Mediastation at " + url)

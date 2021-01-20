@@ -31,7 +31,7 @@ def touched(tag):
         print("Sonos room changed to " + sonosroom_local)
         return True
       
-      playmusic.playtag(sonosroom_local, receivedtext)
+      return playmusic.playtag(sonosroom_local, receivedtext)
 
   else:
     print("")
@@ -103,6 +103,5 @@ if reader is not None:
   print("")
 
   while True:
-
     reader.connect(rdwr={'on-connect': touched, 'beep-on-connect': False})
     time.sleep(0.1)
